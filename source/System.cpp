@@ -288,10 +288,25 @@ const Point &System::Position() const
 
 const Point System::Gravity(const Point pos, const double mass) const
 {
-	Point distance = (position - pos);
-	Point unit = distance.Unit();
-	double length = distance.Length();
-	return (distance*30) * (1/length) / mass;
+	Point gravity;
+	
+	for(StellarObject object : objects)
+	{
+		Point distance = (pos - object.Position());
+		Point unit = distance.Unit();
+		
+		// See: https://en.wikipedia.org/wiki/Newton's_law_of_universal_gravitation#Vector_form
+		double constant = 0.0005;
+		
+		double length = distance.LengthSquared();
+		if(distance.Length() < object.Radius()/4) {
+			length = (object.Radius()/8) * distance.Length();
+		}
+		Point gravity_newton = -constant * ((mass * object.Radius()) / (length)) * unit;
+		
+		gravity += gravity_newton;
+	}
+	return gravity;
 }
 
 
