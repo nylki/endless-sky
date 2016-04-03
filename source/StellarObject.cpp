@@ -173,3 +173,7 @@ double StellarObject::Distance() const
 {
 	return distance;
 }
+
+double StellarObject::Mass() const {
+	return Radius();
+}

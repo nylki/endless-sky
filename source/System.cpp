@@ -296,11 +296,11 @@ const Point System::Gravity(const Point pos, const double mass) const
 		Point unit = distance.Unit();
 		
 		// See: https://en.wikipedia.org/wiki/Newton's_law_of_universal_gravitation#Vector_form
-		double constant = 0.0005;
+		double constant = 0.001;
 		
 		double length = distance.LengthSquared();
 		if(distance.Length() < object.Radius()/4) {
-			length = (object.Radius()/8) * distance.Length();
+			length = (object.Radius()/4) * (object.Radius()/4);
 		}
 		Point gravity_newton = -constant * ((mass * object.Radius()) / (length)) * unit;
 		
