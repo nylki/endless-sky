@@ -78,6 +78,9 @@ public:
 	// Get this system's name and position (in the star map).
 	const std::string &Name() const;
 	const Point &Position() const;
+	
+	// Get gravitational acceleration for given position and mass in this system.
+	const Point Gravity(const Point pos, const double mass) const;
 	// Get this system's government.
 	const Government *GetGovernment() const;
 	

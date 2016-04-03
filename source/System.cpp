@@ -286,6 +286,14 @@ const Point &System::Position() const
 	return position;
 }
 
+const Point System::Gravity(const Point pos, const double mass) const
+{
+	Point distance = (position - pos);
+	Point unit = distance.Unit();
+	double length = distance.Length();
+	return (distance*30) * (1/length) / mass;
+}
+
 
 
 // Get this system's government.

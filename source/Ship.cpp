@@ -990,8 +990,10 @@ bool Ship::Move(list<Effect> &effects)
 					energy -= cost;
 					heat += attributes.Get((thrustCommand > 0.) ?
 						"thrusting heat" : "reverse thrusting heat");
+						// ACTUAL ACCELERATION HERE!
 					acceleration += angle.Unit() * (thrustCommand * thrust / mass);
 				}
+				
 			}
 		}
 		bool applyAfterburner = commands.Has(Command::AFTERBURNER) && !CannotAct();
@@ -1022,6 +1024,12 @@ bool Ship::Move(list<Effect> &effects)
 					}
 			}
 		}
+		
+		// TEST: add gravity.
+		Point gravity = GetSystem()->Gravity(position, mass);
+		// printf("adding gravity acceleration %f, %f\n", gravity.X(), gravity.Y());
+		acceleration += GetSystem()->Gravity(position, mass);
+		
 		if(acceleration)
 		{
 			acceleration *= slowMultiplier;
@@ -1035,6 +1043,11 @@ bool Ship::Move(list<Effect> &effects)
 				velocity += dragAcceleration;
 			}
 		}
+		
+		
+
+		
+		
 		if(commands.Turn())
 		{
 			// Check if we are able to turn.
@@ -1717,7 +1730,7 @@ double Ship::JumpFuel() const
 	if(type)
 		return type;
 	return attributes.Get("jump drive") ? 200. :
-		attributes.Get("scram drive") ? 150. : 
+		attributes.Get("scram drive") ? 150. :
 		attributes.Get("hyperdrive") ? 100. : 0.;
 }
 

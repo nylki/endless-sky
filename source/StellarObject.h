@@ -62,6 +62,8 @@ public:
 	int Parent() const;
 	// Find out how far this object is from its parent.
 	double Distance() const;
+	// Get Mass for gravitational calculations.
+	double Mass() const;
 	
 	
 private:
@@ -69,6 +71,7 @@ private:
 	Point position;
 	Point unit;
 	const Planet *planet;
+	double mass;
 	
 	double distance;
 	double speed;
