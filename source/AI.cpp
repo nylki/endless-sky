@@ -227,7 +227,7 @@ void AI::Step(const list<shared_ptr<Ship>> &ships, const PlayerInfo &player)
 			if(ogov->AttitudeToward(gov) > 0. && oit->Position().Distance(it->Position()) < 2000.)
 				strength += oit->Cost();
 		}
-	}		
+	}
 	
 	const Ship *flagship = player.Flagship();
 	step = (step + 1) & 31;
@@ -1017,6 +1017,8 @@ void AI::PrepareForHyperspace(Ship &ship, Command &command)
 	// If we are moving too fast, point in the right direction.
 	else if(Stop(ship, command, ship.Attributes().Get("jump speed")))
 	{
+		// TODO: Might have to compensate for gravity here
+		// Fly away from gravity otherwise gravity will throw you back again.
 		if(type != 200)
 			command.SetTurn(TurnToward(ship, direction));
 	}

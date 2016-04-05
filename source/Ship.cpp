@@ -1024,8 +1024,18 @@ bool Ship::Move(list<Effect> &effects)
 		
 		// TEST: add gravity.
 		Point gravity = GetSystem()->Gravity(position, mass);
+		// To make it easier for player and AI, always allow a minimum thrust against gravity
+		// when using engines.
+		if(acceleration) {
+			double gravityThrustFactor = gravity.Length() / acceleration.Length();
+			if(gravityThrustFactor >= 1.0) {
+				gravity /= gravityThrustFactor;
+				// gravity = Point(0.0, 0.0);
+			}
+		}
+
 		// printf("adding gravity acceleration %f, %f\n", gravity.X(), gravity.Y());
-		acceleration += GetSystem()->Gravity(position, mass);
+		acceleration += gravity;
 		
 		if(acceleration)
 		{
