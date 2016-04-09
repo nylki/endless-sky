@@ -1027,10 +1027,11 @@ bool Ship::Move(list<Effect> &effects)
 			}
 		}
 		
-		// TEST: add gravity.
 		Point gravity = GetSystem()->Gravity(position, mass);
 		// To make it easier for player and AI, always allow a minimum thrust against gravity
-		// when using engines.
+		// when using engines. This is cheating a bit, but it's more fun that getting trapped.
+		// You will still be much slower when trying to escape gravity, which keeps it
+		// tactical potential.
 		if(acceleration) {
 			double gravityThrustFactor = gravity.Length() / acceleration.Length();
 			if(gravityThrustFactor >= 1.0) {
