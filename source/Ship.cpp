@@ -722,7 +722,9 @@ bool Ship::Move(list<Effect> &effects)
 		energy += attributes.Get("energy generation") - ionization;
 		energy = max(0., energy);
 		heat += attributes.Get("heat generation");
+		double starHeat = 20 / (.01 * position.Length() + 1);
 		heat -= attributes.Get("cooling");
+		heat += starHeat;
 		heat = max(0., heat);
 	}
 	
@@ -1159,6 +1161,17 @@ bool Ship::Move(list<Effect> &effects)
 		energy -= SHIELD_EXCHANGE_RATE * shieldGeneration;
 		double excessShields = max(0., shields - maxShields);
 		shields -= excessShields;
+		
+		// Calculate damage, done by System objects.
+		double shieldDamageByStar = 7.0 / Position().Length();
+		double shieldFraction = 1. / (1. + disruption * .01);
+		if(shieldDamageByStar > shields)
+		    shieldFraction = min(shieldFraction, shields / shieldDamageByStar);
+		shields -= shieldDamageByStar * shieldFraction;
+		hull -= shieldDamageByStar * (1. - shieldFraction);
+		shields -= shieldDamageByStar;
+		if(shields == 0.)
+			hull -= shieldDamageByStar;
 		
 		for(Bay &bay : bays)
 		{

@@ -176,5 +176,6 @@ double StellarObject::Distance() const
 
 double StellarObject::Mass() const
 {
-	return pow(Radius(), 2.);
+	double multiplier = isStar ? 10. : 1.;
+	return pow(Radius() * multiplier, 2.);
 }
