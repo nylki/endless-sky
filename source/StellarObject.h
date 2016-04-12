@@ -64,6 +64,10 @@ public:
 	double Distance() const;
 	// Get Mass for gravitational calculations.
 	double Mass() const;
+	// Get proximity damage of stellar object.
+	double ProximityDamage() const;
+	// Get proximity heat damage of stellar object.
+	double ProximityHeatDamage() const;
 	
 	
 private:
@@ -72,6 +76,9 @@ private:
 	Point unit;
 	const Planet *planet;
 	double mass;
+	
+	double proximityDamage;
+	double proximityHeatDamage;
 	
 	double distance;
 	double speed;
