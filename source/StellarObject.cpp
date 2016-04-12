@@ -176,8 +176,8 @@ double StellarObject::Distance() const
 double StellarObject::Mass() const
 {
 	// If a mas is explicitly defined, return it
-	// if(mass && mass > 0.)
-	// 	return mass;
+	if(mass && mass > 0.)
+		return mass;
 	// Otherwise calculate mass from radius and if it is a star.
 	double multiplier = isStar ? 10. : 1.;
 	return pow(Radius() * multiplier, 2.);
