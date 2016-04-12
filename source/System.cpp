@@ -514,6 +514,12 @@ void System::LoadObject(const DataNode &node, Set<Planet> &planets, int parent)
 			object.speed = 360. / child.Value(1);
 		else if(child.Token(0) == "offset" && child.Size() >= 2)
 			object.offset = child.Value(1);
+		else if(child.Token(0) == "mass" && child.Size() >= 2)
+			object.mass = child.Value(1);
+		else if(child.Token(0) == "proximityDamage" && child.Size() >= 2)
+			object.proximityDamage = child.Value(1);
+		else if(child.Token(0) == "proximityHeatDamage" && child.Size() >= 2)
+			object.proximityHeatDamage = child.Value(1);
 		else if(child.Token(0) == "object")
 			LoadObject(child, planets, index);
 		else

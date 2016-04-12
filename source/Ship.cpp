@@ -1161,23 +1161,27 @@ bool Ship::Move(list<Effect> &effects)
 		shields -= excessShields;
 		
 		// Calculate damage, done by System objects, like stars.
+		double proximityDamage = 0.;
+		double proximityHeat = 0.;
 		for(StellarObject object : GetSystem()->Objects())
 		{
-			// Add heat damage.
-			double proximityHeat = object.ProximityHeatDamage() / (.01 * position.Length() + 1);
-			heat += proximityHeat;
-			
+			Point distance = object.Position() - Position();
+			double length = distance.Length();
 			// Add proximity regular damage.
-			double proximityDamage = object.ProximityDamage() / Position().Length();
-			double shieldFraction = 1. / (1. + disruption * .01);
-			if(proximityDamage > shields)
-			shieldFraction = min(shieldFraction, shields / proximityDamage);
-			shields -= proximityDamage * shieldFraction;
-			hull -= proximityDamage * (1. - shieldFraction);
-			shields -= proximityDamage;
-			if(shields == 0.)
-			hull -= proximityDamage;
+			proximityDamage += object.ProximityDamage() / length;
+			// Add heat damage.
+			proximityHeat = object.ProximityHeatDamage() / (.01 * position.Length() + 1);
 		}
+		double shieldFraction = 1. / (1. + disruption * .01);
+		if(proximityDamage > shields)
+			shieldFraction = min(shieldFraction, shields / proximityDamage);
+		shields -= proximityDamage * shieldFraction;
+		hull -= proximityDamage * (1. - shieldFraction);
+		shields -= proximityDamage;
+		if(shields == 0.)
+			hull -= proximityDamage;
+			
+		heat += proximityHeat;
 		
 		for(Bay &bay : bays)
 		{

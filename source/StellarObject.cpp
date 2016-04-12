@@ -25,8 +25,7 @@ using namespace std;
 
 // Object default constructor.
 StellarObject::StellarObject()
-	: planet(nullptr),
-	distance(0.), speed(0.), offset(0.), parent(-1),
+	: planet(nullptr), mass(0.), proximityDamage(0.), proximityHeatDamage(0.), distance(0.), speed(0.), offset(0.), parent(-1),
 	message(nullptr), isStar(false), isStation(false), isMoon(false)
 {
 }
@@ -177,8 +176,8 @@ double StellarObject::Distance() const
 double StellarObject::Mass() const
 {
 	// If a mas is explicitly defined, return it
-	if(mass)
-		return mass;
+	// if(mass && mass > 0.)
+	// 	return mass;
 	// Otherwise calculate mass from radius and if it is a star.
 	double multiplier = isStar ? 10. : 1.;
 	return pow(Radius() * multiplier, 2.);
@@ -186,10 +185,10 @@ double StellarObject::Mass() const
 
 double StellarObject::ProximityDamage() const
 {
-	return 100; //proximityDamage;
+	return (isStar && proximityDamage == 0.) ? 25 : proximityDamage;
 }
 
 double StellarObject::ProximityHeatDamage() const
 {
-	return 100; //proximityHeatDamage;
+	return (isStar && proximityHeatDamage == 0.) ? 10 : proximityHeatDamage;
 }
